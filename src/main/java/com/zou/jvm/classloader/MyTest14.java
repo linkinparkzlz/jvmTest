@@ -25,6 +25,13 @@ public class MyTest14 {
         // file:/Users/zoulvzhou/Documents/workspace/jvmTest/out/production/classes/com/zou/jvm/classLoader/MyTest13.class
 
 
+        System.out.println("-------");
+
+        Class<?> clazz = MyTest14.class;
+        System.out.println(clazz.getClassLoader());
+        // sun.misc.Launcher$AppClassLoader@18b4aac2
+
+
     }
 
 }
