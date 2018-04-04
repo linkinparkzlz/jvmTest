@@ -12,6 +12,8 @@ public class MyTest16 extends ClassLoader {
 
     private final String fileExtendsion = ".class";
 
+    private String path; //加载路径
+
     public MyTest16(String classLoaderName) {
 
         super(); //将系统类加载器当做该类加载器的父加载器
@@ -39,6 +41,10 @@ public class MyTest16 extends ClassLoader {
     @Override
     protected Class<?> findClass(String className) throws ClassNotFoundException {
 
+        System.out.println("findClass invoked: " + className);
+
+        System.out.println("class  loader name: " + this.classLoaderName);
+
 
         byte[] data = this.loadClassData(className);
 
@@ -47,17 +53,18 @@ public class MyTest16 extends ClassLoader {
 
     }
 
-    private byte[] loadClassData(String name) {
+    private byte[] loadClassData(String className) {
 
         InputStream inputStream = null;
         byte[] data = null;
         ByteArrayOutputStream byteArrayOutputStream = null;
 
+        //从指定的位置加载
+        className = classLoaderName.replace(".", "/");
+
         try {
 
-            this.classLoaderName = this.classLoaderName.replace(".", "/");
-
-            inputStream = new FileInputStream(new File(name + this.fileExtendsion));
+            inputStream = new FileInputStream(new File(this.path + className + this.fileExtendsion));
 
             byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -88,24 +95,45 @@ public class MyTest16 extends ClassLoader {
 
     }
 
-
-    public static void test(ClassLoader classLoader) throws Exception {
-
-        Class<?> clazz = classLoader.loadClass("com.zou.jvm.classloader.MyTest1");
-
-        Object object = clazz.newInstance();
-
-        System.out.println(object);
-
+    public void setPath(String path) {
+        this.path = path;
     }
 
 
     public static void main(String[] args) throws Exception {
 
         MyTest16 loader1 = new MyTest16("loader1");
-        test(loader1);
 
-        //  输出  com.zou.jvm.classloader.MyTest1@60e53b93
+       // loader1.setPath("/Users/zoulvzhou/Documents/workspace/jvmTest/out/production/classes/");
+
+        loader1.setPath("/Users/zoulvzhou/Desktop/");
+
+
+        Class<?> clazz = loader1.loadClass("com.zou.jvm.classloader.MyTest1");
+
+        System.out.println("class: " + clazz.hashCode());
+
+        Object object = clazz.newInstance();
+
+        System.out.println(object);
+
+        System.out.println(object.getClass().getClassLoader());
+
+        /*
+        1输出：
+        class: 1625635731
+        com.zou.jvm.classloader.MyTest1@5e2de80c
+        sun.misc.Launcher$AppClassLoader@18b4aac2
+
+        2输出
+        findClass invoked: com.zou.jvm.classloader.MyTest1
+        class  loader name: loader1
+
+         */
+
+
+
+
     }
 
 }
