@@ -132,6 +132,51 @@ public class MyTest16 extends ClassLoader {
          */
 
 
+        System.out.println("-------------------");
+
+
+        MyTest16 loader2 = new MyTest16("loader2");
+
+        // loader1.setPath("/Users/zoulvzhou/Documents/workspace/jvmTest/out/production/classes/");
+
+        loader1.setPath("/Users/zoulvzhou/Desktop/");
+
+
+        Class<?> clazz2 = loader1.loadClass("com.zou.jvm.classloader.MyTest1");
+
+        System.out.println("class: " + clazz2.hashCode());
+
+        Object object2 = clazz.newInstance();
+
+        System.out.println(object2);
+
+        /*
+
+           输出：
+           class: 1625635731
+            com.zou.jvm.classloader.MyTest1@1d44bcfa
+         */
+
+
+        System.out.println("--------------------");
+
+        MyTest16 loader3 = new MyTest16(loader2,"loader2");
+
+        // loader1.setPath("/Users/zoulvzhou/Documents/workspace/jvmTest/out/production/classes/");
+
+        loader3.setPath("/Users/zoulvzhou/Desktop/");
+
+
+        Class<?> clazz3 = loader1.loadClass("com.zou.jvm.classloader.MyTest1");
+
+        System.out.println("class: " + clazz3.hashCode());
+
+        Object object3 = clazz.newInstance();
+
+        System.out.println(object3);
+
+
+
 
 
     }
